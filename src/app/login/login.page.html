@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img src="/assets/Logo/Logo_DuocUC.svg.png" alt="Duoc UC Logo"  class="logo"></ion-img>
+
+  <ion-item>
+    <ion-label position="floating">Usuario</ion-label>
+    <ion-input [(ngModel)] ="username" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input [(ngModel)] ="password" type="password"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click) ="iniciarSesion()">Iniciar Sesión</ion-button>
+
+  <ion-item lines="none">
+    <ion-checkbox slot="start"></ion-checkbox>
+    <ion-label>Mantener sesión iniciada</ion-label>
+  </ion-item>
+  
+  <div class="link-container">
+    <a routerLink="/forgot-password" class="forgot-password-link">Recuperar Contraseña</a>
+  </div>
+</ion-content>
+
