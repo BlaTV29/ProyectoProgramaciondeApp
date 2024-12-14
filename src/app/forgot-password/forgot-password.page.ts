@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -8,9 +9,11 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage {
-  email:string='';
+  username: string = '';
+  email: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router, private alertController: AlertController, private authService: AuthService) {
+  }
 
   async recuperarContrasena() {
     if (!this.email) {
@@ -20,20 +23,24 @@ export class ForgotPasswordPage {
       await this.mostrarMensaje('Por favor ingresa un correo electrónico válido.');
     
     } else {
+    
       await this.mostrarMensaje('Se ha enviado un enlace de recuperación a ' + this.email);
+      this.router.navigate(['/login']);
     }
+    
 
     this.email = '';
   }
 
-  validarEmail(email: string): boolean{
+
+  validarEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  async mostrarMensaje(mensaje: string){
+  async mostrarMensaje(mensaje: string) {
     const alert = await this.alertController.create({
-      header: 'Recuperacion de Contraseña',
+      header: 'Recuperación de Contraseña',
       message: mensaje,
       buttons: ['OK'],
     });
@@ -42,5 +49,3 @@ export class ForgotPasswordPage {
   }
 
 }
-
-  

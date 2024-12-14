@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,28 +13,33 @@ export class LoginPage{
   username: string='';
   password: string='';
 
-  constructor(private router: Router, private alertCotroller: AlertController) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
   async iniciarSesion() {
-    const adminCredentials = { username: 'admin', password: 'admin123' };
-    const userCredentials = { username: 'usuario', password: 'user123' };
-
-    if(this.username === adminCredentials.username && this.password === adminCredentials.password){
-      await this.mostrarMensaje('Bienvenido, Admin');
-
-    } else if (this.username === userCredentials.username && this.password === userCredentials.password){
-      await this.mostrarMensaje('Bienvenido, Usuario');
-      
+    if (this.authService.validateCredentials(this.username, this.password)) {
+      const userType = this.authService.getUserType();
+  
+      if (userType === 'docente') {
+        await this.mostrarMensaje('Inicio de sesión exitoso como Docente.');
+        this.router.navigate(['/inicio-docente']); 
+      } else {
+        await this.mostrarMensaje('Inicio de sesión exitoso como Estudiante.');
+        this.router.navigate(['/inicio']); 
+      }
     } else {
       await this.mostrarMensaje('Credenciales incorrectas, intente nuevamente.');
     }
-
     this.username = '';
     this.password = '';
   }
+  
 
-  async mostrarMensaje(mensaje: string){
-    const alert = await this.alertCotroller.create({
+  async mostrarMensaje(mensaje: string) {
+    const alert = await this.alertController.create({
       header: 'Inicio de Sesión',
       message: mensaje,
       buttons: ['OK'],
@@ -41,5 +47,4 @@ export class LoginPage{
 
     await alert.present();
   }
-
 }
